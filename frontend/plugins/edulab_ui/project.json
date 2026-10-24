@@ -1,0 +1,65 @@
+{
+  "name": "edulab_ui",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "frontend/plugins/edulab_ui/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/rspack:rspack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "web",
+        "outputPath": "dist/frontend/plugins/edulab_ui",
+        "main": "frontend/plugins/edulab_ui/src/main.ts",
+        "tsConfig": "frontend/plugins/edulab_ui/tsconfig.app.json",
+        "rspackConfig": "frontend/plugins/edulab_ui/rspack.config.ts",
+        "assets": [
+          "frontend/plugins/edulab_ui/src/assets"
+        ]
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production",
+          "optimization": true,
+          "sourceMap": false,
+          "rspackConfig": "frontend/plugins/edulab_ui/rspack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/rspack:module-federation-dev-server",
+      "options": {
+        "buildTarget": "edulab_ui:build:development",
+        "port": 3012
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "buildTarget": "edulab_ui:build:production"
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/rspack:module-federation-static-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "serveTarget": "edulab_ui:serve"
+      },
+      "configurations": {
+        "development": {
+          "serveTarget": "edulab_ui:serve:development"
+        },
+        "production": {
+          "serveTarget": "edulab_ui:serve:production"
+        }
+      }
+    }
+  }
+}
